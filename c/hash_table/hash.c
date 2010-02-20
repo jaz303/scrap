@@ -160,14 +160,13 @@ void* ht_remove(hash_table_t *h, void* key) {
 
     void *value = NULL;
 
-    h->count--;
-    
     HASH_TABLE_HASH(key);
     hash_table_entry_t *entry = h->table[hash_code];
     
     hash_table_entry_t *prev = NULL;
     while (entry != NULL) {
         if (HASH_TABLE_KEY_CMP(key, entry->key)) {
+            h->count--;
             value = entry->value;
             if (h->fn_kcopy != NULL) {
                 free(entry->key);
