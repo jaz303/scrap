@@ -1,0 +1,31 @@
+message Role {
+    optional uint32 id = 1;
+    optional string name = 2;
+}
+
+message Person {
+    optional int32 employee_number = 1;
+    optional string forename = 2;
+    optional string surname = 3;
+    optional uint32 salary = 5 [default = 10000];
+    repeated Role roles = 4;
+    
+    enum Status {
+        NORMAL = 0;
+        PROBATION = 1;
+    }
+    
+    optional Status status = 6 [default = NORMAL];
+    
+    extensions 1000 to 4999;
+}
+
+extend Person {
+    optional string computing_department_id = 1000;
+    optional string computing_department_check = 1001;
+}
+
+extend Person {
+    optional uint32 marketing_department_access_code = 1100;
+}
+
