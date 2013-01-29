@@ -18,3 +18,8 @@ Preparing a flash image:
 Running flash image:
 
     $ qemu-system-arm -M connex -pflash flash.bin -nographic -serial none
+
+Inside qemu:
+    
+    (qemu) info registers
+    (qemu) xp /4iw 0x0
