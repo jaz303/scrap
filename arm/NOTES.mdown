@@ -1,0 +1,20 @@
+Building:
+
+    # Assemble and link
+    $ arm-none-eabi-as -o file.o file.s
+    $ arm-none-eabi-ld -Ttext=0x0 -o file.elf file.o
+    
+    # To inspect the file
+    $ arm-none-eabi-nm file.elf
+    
+    # Now convert elf to bin
+    $ arm-none-eabi-objcopy -O binary file.elf file.bin
+
+Preparing a flash image:
+
+    $ dd if=/dev/zero of=flash.bin bs=4096 count=4096
+    $ dd if=$FILE of=flash.bin bs=4096 conv=notrunc
+    
+Running flash image:
+
+    $ qemu-system-arm -M connex -pflash flash.bin -nographic -serial none

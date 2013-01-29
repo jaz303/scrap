@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export PATH=/opt/toolchains/arm:$PATH
+
+function run {
+    qemu-system-arm -M connex -pflash $1 -nographic -serial none
+}
