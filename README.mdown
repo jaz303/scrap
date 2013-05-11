@@ -1,0 +1,5 @@
+# scrap
+
+Just a playground for technologies new and old.
+Don't expect anything in here to be useful, or even compile.
+
