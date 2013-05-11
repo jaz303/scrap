@@ -1,0 +1,77 @@
+IDBFactory
+----------
+Provides access to DB
+  - open(name, version)
+  - deleteDatabase(name)
+  - cmp(first, second)
+    > Compare two values as keys for equality and ordering operations
+    
+IDBDatabase
+-----------
+Gives access to a transaction. Everything happens in scope of transaction.
+Transactions can be in 1 of 3 modes: readonly, readwrite, versionchange
+Scope states what object stores and index covers. Optimise by specifying
+minimal number of object stores etc.
+
+  - createObjectStore(name, optional params)
+    > options are keyPath and autoIncrement. autoIncrement supplies key generator
+  - deleteObjectStore
+  - transaction(storeNames, mode)
+  - close()
+  - name
+  - version
+  - objectStoreNames
+
+IDBObjectStore
+--------------
+  - add(value, optional key)
+    > returns IDBRequest. clones value and stores in store
+    > use transaction's complete event and the request's success event
+    > insert only. fails if object with key already exists
+  - clear()
+    > returns IDBRequest. deletes everything in this store
+  - count(optional key)
+    > async count. returns IDBRequest
+  - createIndex(name, keyPath, optional params)
+    > create and return IDBIndex. can only be run from a VersionChange transaction
+    > mode callback
+    > optional params: unique (don't allow duplicates for key)
+    >                  multiEntry (index will add an entry for each array ele when keypath => array)
+  - delete(key)
+    > delete by key. returns IDBRequest
+  - deleteIndex(name)
+    > opposite of createIndex. same restrictions.
+  - get(key)
+    > get by key. returns IDBRequest. on success, result of request is set to value
+  - index(name)
+    > opens index. returns IDBIndex
+  - openCursor(optional range, optional direction)
+    > returns IDBRequest. opens cursor and returns.
+  - put(value, optional key)
+    > returns IDBRequest. put clone of object. update or insert.
+  - indexNames
+  - keyPath
+  - name
+  - transaction
+  - autoIncrement
+  
+IDBTransaction
+--------------
+  - abort()
+    > rollback tx
+  - objectStore()
+    > gets object store obj representing object store that has already been added
+    > to this tx
+    
+IDBRequest
+----------
+Provides access to async events raised in response to operations
+  - result
+  - error
+  - source
+  - transaction
+  - readyState
+  - onerror
+  - onsuccess
+  
+IDBIndex

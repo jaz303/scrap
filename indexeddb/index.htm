@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script>
+      function init() {
+        
+        var request = indexedDB.open('stuff', 3);
+        request.onsuccess = function(evt) {
+          var db = this.result; // this === evt.target === request
+          
+          console.log("hi!");
+          
+          // list of object stores involved in tx
+          var tx = db.transaction(['things'], 'readwrite');
+          
+          // now get the stores
+          var store = tx.objectStore('things');
+          var req = store.put({
+            id: "foo",
+            name: "bar"
+          });
+          
+          req.onsuccess = function(evt) {
+            console.log('put complete');
+          }
+          
+          req.onerror = function(evt) {
+            console.log('put failed');
+          }
+          
+          // create transction
+          //var tx = db.transaction();
+          
+          
+          //console.log(tx);
+        }
+        
+        request.onerror = function(evt) {
+          // TODO: handle error
+        }
+        
+        // run when current version of DB does not match requested version
+        // can inspect current version via this.result.current, then
+        // perform required migrations
+        request.onupgradeneeded = function(evt) {
+          console.log("upgrade!");
+          var db = this.result;
+          var datastore = db.createObjectStore("things", {
+            keyPath: "id" // keyPath identifies what makes each object unique
+          })
+        }
+        
+      }
+    </script>
+  </head>
+  <body onload='init()'>
+  
+  </body>
+</html>
