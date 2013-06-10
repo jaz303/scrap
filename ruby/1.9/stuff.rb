@@ -169,15 +169,18 @@ enum.each { |v,ix| p v }
 #
 # Fibers
 
-f1 = Fiber.new do |x|
-  p "f1: #{x}"
+$f1 = Fiber.new do |x|
+  while x < 10
+    p "f1: #{x}"
+    x = $f2.resume(x + 2)
+  end
 end
 
-f2 = Fiber.new do
-  
+$f2 = Fiber.new do |x|
+  loop do
+    p "f2: #{x}"
+    x = Fiber.yield x-1
+  end
 end
 
-f1.resume(1)
-
-
-
+$f1.resume(1)
