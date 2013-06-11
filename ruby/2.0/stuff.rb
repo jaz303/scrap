@@ -39,7 +39,36 @@ def unbound
   #p Foo.instance_method(:bleep).bind(Object.new).call
 end
 
+class C1
+  class C2
+    FOO = 2
+  end
+end
+
+def const_get_namespace
+  p Object.const_get('C1::C2::FOO')
+end
+
+def to_h
+  p({:foo => 1}.to_h)
+  p nil.to_h
+end
+
+def encoding
+  p "foo".encoding
+  p "foo".b.encoding
+end
+
 keyword_args
 keyword_capture
 symbol_literal
 unbound
+const_get_namespace
+to_h
+
+warn "hi!"
+encoding
+p __dir__
+
+# glob braces supported in File.fnmatch?
+# can set stack sizes for threads/fibers at startup
