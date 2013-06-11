@@ -72,3 +72,11 @@ p __dir__
 
 # glob braces supported in File.fnmatch?
 # can set stack sizes for threads/fibers at startup
+# Thread.handle_interrupt and Thread.pending_interrupt? for controlling async cross-thread exceptions
+
+# use define_method @ top level
+define_method :foo do 
+  puts "FOO"
+end
+
+foo
