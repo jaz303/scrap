@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title></title>
+
+  <script>
+    var vm      = require('vm'),
+        canvas  = null,
+        ctx     = null;
+
+    function run() {
+
+      var r = null;
+
+      var sandbox = {
+        log: function(thing) {
+          console.log(thing);
+        },
+        clear: function() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        },
+        rect: function(x, y, w, h) {
+          ctx.fillStyle = 'black';
+          ctx.fillRect(x, y, w, h);
+        },
+        __export: function(runner) {
+          r = runner;
+        }
+      }
+
+      var code = document.getElementById('code').value;
+
+      code += ';__export(run);';
+
+      vm.runInNewContext(code, sandbox);
+
+      setInterval(r, 30);
+
+    }
+
+    function init() {
+      canvas = document.getElementById('canvas');
+      ctx = canvas.getContext('2d');
+    }
+  </script>
+
+
+</head>
+<body onload='init();'>
+  <canvas id='canvas' width='600' height='400'></canvas><br>
+  <textarea id='code' rows='8' cols='80'></textarea><br>
+  <input type='button' value='Run' onclick='run();'>
+</body>
+</html>
