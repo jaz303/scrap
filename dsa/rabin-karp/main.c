@@ -39,10 +39,11 @@ int main(int argc, char *argv[]) {
         if (ch == '\n') line++;
         if (pos >= search_str_len) {
             drop[(pos-1)%search_str_len] = ch;
-            rolling_hash = (((rolling_hash - drop[pos%search_str_len])*A)+ch) % N;
+            uint32_t drop_val = drop[pos%search_str_len] * ipow(A, search_str_len - 1);
+            rolling_hash = (((rolling_hash - drop_val)*A)+ch) % N;
         } else {
-            drop[pos] = (ch * ipow(A, search_str_len - (pos+1)));
-            rolling_hash = (rolling_hash + drop[pos]) % N;
+            drop[pos] = ch;
+            rolling_hash = (rolling_hash + (ch * ipow(A, search_str_len - (pos+1)))) % N;
         }
         if (rolling_hash == search_hash) {
             printf("potential match on line: %d\n", line);
