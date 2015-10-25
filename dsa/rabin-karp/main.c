@@ -2,49 +2,52 @@
 #include <stdint.h>
 #include <string.h>
 
-const char *search_string = "accuse me of such things";
-const uint32_t A = 7;
-const uint32_t N = 65521;
-
-int ipow(uint32_t base, uint32_t exp) {
-    uint32_t result = 1;
-    while (exp != 0) {
-        if ((exp & 1) == 1)
-            result *= base;
-        exp >>= 1;
-        base *= base;
-    }   
-    return result;
-}
+const char *search_string = "accuse";
+const int32_t A = 256;
+const int32_t MOD = 65521;
 
 int main(int argc, char *argv[]) {
 
-    uint32_t drop[128];
-    
     uint32_t line = 1;
-    
-    uint32_t search_hash = 0;
+    int32_t factor = 1;
+    uint8_t drop[128];
+
     uint32_t search_str_len = strlen(search_string);
-    for (int i = 0; i < search_str_len; ++i) {
-        search_hash = (search_hash + (search_string[i] * ipow(A, search_str_len - (i+1)))) % N;
+    int32_t search_hash = 0;
+    for (int i = 0; i < search_str_len - 1; ++i) {
+        factor = (factor * A) % MOD;
     }
 
+    for (int i = 0; i < search_str_len; ++i) {
+        search_hash = ((search_hash * A) + search_string[i]) % MOD;
+    }
+
+    printf("search string length: %d\n", search_str_len);
     printf("search hash: %d\n", search_hash);
 
-    uint32_t rolling_hash = 0;
+    int32_t rolling_hash = 0;
     uint32_t pos = 0;
+
+    while (!feof(stdin) && (pos < search_str_len)) {
+        uint8_t ch = fgetc(stdin);
+        if (ch == '\n') line++;
+        rolling_hash = ((rolling_hash * A) + ch) % MOD;
+        drop[pos++] = ch;
+    }
+
+    printf("initial hash: %d\n", rolling_hash);
+
+    // TODO: should really check for a match at position 0 here
 
     while (!feof(stdin)) {
         uint8_t ch = fgetc(stdin);
         if (ch == '\n') line++;
-        if (pos >= search_str_len) {
-            drop[(pos-1)%search_str_len] = ch;
-            uint32_t drop_val = drop[pos%search_str_len] * ipow(A, search_str_len - 1);
-            rolling_hash = (((rolling_hash - drop_val)*A)+ch) % N;
-        } else {
-            drop[pos] = ch;
-            rolling_hash = (rolling_hash + (ch * ipow(A, search_str_len - (pos+1)))) % N;
-        }
+        drop[(pos-1)%search_str_len] = ch;
+        uint8_t drop_char = drop[pos%search_str_len];
+        
+        rolling_hash = ((A * (rolling_hash - (drop_char * factor))) + ch) % MOD;
+        if (rolling_hash < 0) rolling_hash += MOD;
+
         if (rolling_hash == search_hash) {
             printf("potential match on line: %d\n", line);
         }
