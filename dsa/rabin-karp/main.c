@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-const char *search_string = "accuse";
+const char *search_string = "accuse me of such things";
 const int32_t A = 256;
 const int32_t MOD = 65521;
 
@@ -44,8 +44,11 @@ int main(int argc, char *argv[]) {
         if (ch == '\n') line++;
         drop[(pos-1)%search_str_len] = ch;
         uint8_t drop_char = drop[pos%search_str_len];
-        
-        rolling_hash = ((A * (rolling_hash - (drop_char * factor))) + ch) % MOD;
+
+        rolling_hash -= (drop_char * factor);
+        rolling_hash *= A;
+        rolling_hash += ch;
+        rolling_hash %= MOD;
         if (rolling_hash < 0) rolling_hash += MOD;
 
         if (rolling_hash == search_hash) {
