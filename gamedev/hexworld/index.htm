@@ -8,6 +8,15 @@
       var mapWidth = 40;
       var mapHeight = 40;
 
+      var HEX_HEIGHT = 24;
+      var HEX_WIDTH = 24
+      var HEX_SLOPE = 6;
+
+      var HEX_HALF_HEIGHT = HEX_HEIGHT / 2;
+      var HEX_HALF_WIDTH = HEX_WIDTH / 2;
+      var HEX_BOX_HALF_WIDTH = (HEX_WIDTH - (2 * HEX_SLOPE)) / 2;
+      var HEX_X_INC = HEX_WIDTH - HEX_SLOPE;
+
       var COLORS = [
         'orange',
         'red',
@@ -37,21 +46,21 @@
 
         var currX = x;
         for (var i = 0; i < mapWidth; ++i) {
-          var currY = y - (i & 1) ? 20 : 0;
+          var currY = y - (i & 1) ? HEX_HALF_HEIGHT : 0;
           for (var j = 0; j < mapHeight; ++j) {
             ctx.fillStyle = COLORS[map[j * mapWidth + i]];
             ctx.beginPath();
-            ctx.moveTo(currX - 10, currY - 20);
-            ctx.lineTo(currX + 10, currY - 20);
-            ctx.lineTo(currX + 20, currY);
-            ctx.lineTo(currX + 10, currY + 20);
-            ctx.lineTo(currX - 10, currY + 20);
-            ctx.lineTo(currX - 20, currY);
-            ctx.lineTo(currX - 10, currY - 20);
+            ctx.moveTo(currX - HEX_BOX_HALF_WIDTH, currY - HEX_HALF_HEIGHT);
+            ctx.lineTo(currX + HEX_BOX_HALF_WIDTH, currY - HEX_HALF_HEIGHT);
+            ctx.lineTo(currX + HEX_HALF_WIDTH, currY);
+            ctx.lineTo(currX + HEX_BOX_HALF_WIDTH, currY + HEX_HALF_HEIGHT);
+            ctx.lineTo(currX - HEX_BOX_HALF_WIDTH, currY + HEX_HALF_HEIGHT);
+            ctx.lineTo(currX - HEX_HALF_WIDTH, currY);
+            ctx.lineTo(currX - HEX_BOX_HALF_WIDTH, currY - HEX_HALF_HEIGHT);
             ctx.fill();
-            currY += 40;
+            currY += HEX_HEIGHT;
           }
-          currX += 30;
+          currX += HEX_X_INC;
         }
       }
     </script>
