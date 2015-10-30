@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>hexworld</title>
+    <script>
+      var map, canvas, ctx;
+      var mapWidth = 40;
+      var mapHeight = 40;
+
+      var COLORS = [
+        'orange',
+        'red',
+        'green',
+        'blue',
+        'yellow',
+        'purple',
+        'brown'
+      ];
+
+      function init() {
+        canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+        map = [];
+        for (var i = 0; i < mapHeight; ++i) {
+          for (var j = 0; j < mapWidth; ++j) {
+            map.push(Math.floor(Math.random() * COLORS.length));
+          }
+        }
+        draw();
+      }
+
+      function draw() {
+
+        var x = 0;
+        var y = 0;
+
+        var currX = x;
+        for (var i = 0; i < mapWidth; ++i) {
+          var currY = y - (i & 1) ? 20 : 0;
+          for (var j = 0; j < mapHeight; ++j) {
+            ctx.fillStyle = COLORS[map[j * mapWidth + i]];
+            ctx.beginPath();
+            ctx.moveTo(currX - 10, currY - 20);
+            ctx.lineTo(currX + 10, currY - 20);
+            ctx.lineTo(currX + 20, currY);
+            ctx.lineTo(currX + 10, currY + 20);
+            ctx.lineTo(currX - 10, currY + 20);
+            ctx.lineTo(currX - 20, currY);
+            ctx.lineTo(currX - 10, currY - 20);
+            ctx.fill();
+            currY += 40;
+          }
+          currX += 30;
+        }
+      }
+    </script>
+  </head>
+  <body onload='init()'>
+    <canvas id='canvas' width='800' height='600'></canvas>
+  </body>
+</html>
