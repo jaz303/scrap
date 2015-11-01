@@ -1,0 +1,6 @@
+Collision/geometry
+
+  - [x] intersection ray/segment
+  - [x] intersect ray/circle
+  - [ ] collide circle/segment
+  - [ ] collide circle/circle
