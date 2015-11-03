@@ -102,6 +102,22 @@ window.init = function() {
 			vec.mul_(70 * delta);
 			people[0].center.add_(vec);
 
+			var mtv = vec2.make();
+
+			for (var i = 1; i < people.length; ++i) {
+				if (collideCircleCircle(people[i], people[0], mtv)) {
+					people[0].center.add_(mtv);
+				}
+			}
+
+			for (var i = 0; i < walls.length; ++i) {
+				if (collideSegmentCircle(walls[i], people[0], mtv)) {
+					mtv.x *= -1;
+					mtv.y *= -1;
+					people[0].center.add_(mtv);
+				}
+			}
+
 			testRay.origin.x = people[0].center.x;
 			testRay.origin.y = people[0].center.y;
 			
@@ -286,4 +302,43 @@ function intersectRayCircle(ray, circle, point) {
 	// point.x = circle.center.x;
 	// point.y = circle.center.y;
 	// return true;
+}
+
+function collideCircleCircle(b1, b2, mtv) {
+	vec2.sub(b2.center, b1.center, mtv);
+
+	var totalRadius = b1.radius + b2.radius;
+	if (mtv.magnitudesq() >= totalRadius*totalRadius) {
+	    return false;
+	}
+
+	var mag = mtv.magnitude();
+	
+	mtv.div_(mag);
+	mtv.mul_(-(mag - totalRadius));
+
+	return true;
+}
+
+function collideSegmentCircle(segment, circle, mtv) {
+	var segmentVector       = segment.p2.sub(segment.p1);
+	var segmentEndToCentre  = circle.center.sub(segment.p1);
+
+	var t = segmentEndToCentre.dot(segmentVector) / segmentVector.magnitudesq();
+	if (t < 0) t = 0;
+	if (t > 1) t = 1;
+
+	var projected = segmentVector.mul(t);
+	var closest = segment.p1.add(projected);
+	var closestToCenter = circle.center.sub(closest);
+	var distSq = vec2.magnitudesq(closestToCenter);
+
+	if (distSq < circle.radius * circle.radius) {
+		var dist = Math.sqrt(distSq);
+		vec2.div(closestToCenter, dist, mtv);
+	    mtv.mul_(dist - circle.radius);
+		return true;
+	} else {
+		return false;
+	}
 }
