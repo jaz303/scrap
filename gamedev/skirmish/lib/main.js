@@ -99,7 +99,7 @@ window.init = function() {
 			testRay.direction.x = vec.x;
 			testRay.direction.y = vec.y;
 
-			vec.mul_(70 * delta);
+			vec.mul_(150 * delta);
 			people[0].center.add_(vec);
 
 			var mtv = vec2.make();
