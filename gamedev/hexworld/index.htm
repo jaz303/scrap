@@ -61,9 +61,7 @@
           if (offset >= HEX_BOX_WIDTH) {
             var xoff = offset - HEX_BOX_WIDTH;
             if (yoff < HEX_HALF_HEIGHT) {
-              // (for a rectangle of size (w,h) use w*y+h*x-w*h<0)
               if (HEX_HALF_HEIGHT*xoff - HEX_SLOPE*yoff >= 0) {
-                console.log("outside at top");
                 if (!(gx & 1)) {
                   gy--;
                 }
@@ -71,9 +69,7 @@
               }
             } else {
               yoff -= HEX_HALF_HEIGHT;
-              // h*x-w*y<0
               if (HEX_SLOPE*yoff + HEX_HALF_HEIGHT*xoff - HEX_SLOPE*HEX_HALF_HEIGHT >= 0) {
-                console.log("outside at bottom");
                 if (gx & 1) {
                   gy++;
                 }
