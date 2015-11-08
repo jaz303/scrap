@@ -8,13 +8,14 @@
       var mapWidth = 40;
       var mapHeight = 40;
 
-      var HEX_HEIGHT = 24;
-      var HEX_WIDTH = 24
-      var HEX_SLOPE = 6;
+      var HEX_HEIGHT = 100;
+      var HEX_WIDTH = 100
+      var HEX_SLOPE = 30;
 
       var HEX_HALF_HEIGHT = HEX_HEIGHT / 2;
       var HEX_HALF_WIDTH = HEX_WIDTH / 2;
-      var HEX_BOX_HALF_WIDTH = (HEX_WIDTH - (2 * HEX_SLOPE)) / 2;
+      var HEX_BOX_WIDTH = (HEX_WIDTH - (2 * HEX_SLOPE));
+      var HEX_BOX_HALF_WIDTH = HEX_BOX_WIDTH / 2;
       var HEX_X_INC = HEX_WIDTH - HEX_SLOPE;
 
       var COLORS = [
@@ -37,6 +38,53 @@
           }
         }
         draw();
+
+        canvas.addEventListener('click', function(evt) {
+          var click = { x: evt.offsetX, y: evt.offsetY };
+          var camera = { x: HEX_HALF_WIDTH, y: HEX_HALF_HEIGHT };
+          var rel = { x: click.x + HEX_BOX_HALF_WIDTH, y: click.y + HEX_HALF_HEIGHT };
+
+          var roughX = Math.floor(rel.x / HEX_X_INC);
+          var offset = (rel.x % HEX_X_INC); // TODO: fix for -ve values
+
+          var roughY, yoff;
+          if (roughX & 1) {
+            roughY = Math.floor((rel.y - HEX_HALF_HEIGHT) / HEX_HEIGHT);
+            yoff = ((rel.y - HEX_HALF_HEIGHT) % HEX_HEIGHT);
+          } else {
+            roughY = Math.floor(rel.y / HEX_HEIGHT);
+            yoff = rel.y % HEX_HEIGHT;
+          }
+
+          var gx = roughX, gy = roughY;
+
+          if (offset >= HEX_BOX_WIDTH) {
+            var xoff = offset - HEX_BOX_WIDTH;
+            if (yoff < HEX_HALF_HEIGHT) {
+              // (for a rectangle of size (w,h) use w*y+h*x-w*h<0)
+              if (HEX_HALF_HEIGHT*xoff - HEX_SLOPE*yoff >= 0) {
+                console.log("outside at top");
+                if (!(gx & 1)) {
+                  gy--;
+                }
+                gx++;
+              }
+            } else {
+              yoff -= HEX_HALF_HEIGHT;
+              // h*x-w*y<0
+              if (HEX_SLOPE*yoff + HEX_HALF_HEIGHT*xoff - HEX_SLOPE*HEX_HALF_HEIGHT >= 0) {
+                console.log("outside at bottom");
+                if (gx & 1) {
+                  gy++;
+                }
+                gx++;
+              }
+            }
+          }
+
+          document.querySelector('#coord').innerHTML = '(' + gx + ',' + gy + ')';
+        });
+
       }
 
       function draw() {
@@ -46,7 +94,7 @@
 
         var currX = x;
         for (var i = 0; i < mapWidth; ++i) {
-          var currY = y - (i & 1) ? HEX_HALF_HEIGHT : 0;
+          var currY = y + (i & 1) ? HEX_HALF_HEIGHT : 0;
           for (var j = 0; j < mapHeight; ++j) {
             ctx.fillStyle = COLORS[map[j * mapWidth + i]];
             ctx.beginPath();
@@ -66,6 +114,8 @@
     </script>
   </head>
   <body onload='init()'>
+    <h3>Hexworld rendering and picking demo</h3>
+    <pre>You clicked: <span id='coord'>(none)</span></pre>
     <canvas id='canvas' width='800' height='600'></canvas>
   </body>
 </html>
