@@ -30,9 +30,13 @@ SDL_Renderer *renderer;
 void drawMap() {
 	int x = 0, y = 0;
 	int currX = x;
-	for (int i = 0; i < MAP_WIDTH; ++i) {
+
+	int maxX = (800 / HEX_X_INC) + 1;
+	int maxY = (600 / HEX_HEIGHT) + 1;
+
+	for (int i = 0; i < maxX; ++i) {
 		int currY = y - (i & 1) ? HEX_HALF_HEIGHT : 0;
-		for (int j = 0; j < MAP_HEIGHT; ++j) {
+		for (int j = 0; j < maxY; ++j) {
 			int type = map[(j * MAP_WIDTH) + i];
 			int color = colors[type];
 			
