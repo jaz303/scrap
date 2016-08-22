@@ -1,7 +1,8 @@
 #!/bin/sh
 
-export PATH=/opt/toolchains/arm:$PATH
+export PATH=/opt/gcc-arm-none-eabi/bin:$PATH
 
 function run {
-    qemu-system-arm -M connex -pflash $1 -nographic -serial none
+	make $1.bin && \
+    	qemu-system-arm -M connex -pflash $1.bin -nographic -serial none
 }

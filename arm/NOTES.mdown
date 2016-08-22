@@ -1,3 +1,5 @@
+## QEMU stuff
+
 Building:
 
     # Assemble and link
@@ -23,3 +25,16 @@ Inside qemu:
     
     (qemu) info registers
     (qemu) xp /4iw 0x0
+
+## ARM
+
+Flags
+
+    - N: negative; set to bit 31 of result
+    - Z: zero
+    - C: carry
+        - for adc,add,cmn: set if unsigned overflow
+        - for cmp,sbc,sub: set if unsigned underflow
+        - for shifts, set to last bit shifted out by shifter
+    - V: overflow
+        - set on addition/subtraction if a signed overflow occurs
