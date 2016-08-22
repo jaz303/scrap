@@ -1,0 +1,9 @@
+Collision/geometry
+
+  - [x] intersection ray/segment
+  - [x] intersect ray/circle
+  - [x] collide circle/segment
+  - [x] collide circle/circle
+
+  - [ ] extract collision/intersection routines
+        parameters should not be bodies, but individual components
