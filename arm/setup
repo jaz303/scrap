@@ -6,3 +6,8 @@ function run {
 	make $1.bin && \
     	qemu-system-arm -M connex -pflash $1.bin -nographic -serial none
 }
+
+function debug {
+	make $1.bin && \
+    	qemu-system-arm -M connex -pflash $1.bin -nographic -serial none -s -S
+}
