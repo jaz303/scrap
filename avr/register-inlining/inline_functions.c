@@ -1,19 +1,19 @@
 #include <avr/io.h>
 
 struct timer {
-	uint8_t 	cra;
-	uint8_t 	crb;
-	uint8_t 	crc;
-	uint8_t 	__padding_1;
-	uint16_t	cnt;
-	uint16_t	icr;
-	uint16_t	ocra;
-	uint16_t	ocrb;
+	volatile uint8_t 	cra;
+	volatile uint8_t 	crb;
+	volatile uint8_t 	crc;
+	volatile uint8_t 	__padding_1;
+	volatile uint16_t	cnt;
+	volatile uint16_t	icr;
+	volatile uint16_t	ocra;
+	volatile uint16_t	ocrb;
 };
 
-struct timer *t1 = (struct timer*)(0x80);
-struct timer *t2 = (struct timer*)(0x90);
-struct timer *t3 = (struct timer*)(0xA0);
+#define T1 ((struct timer*)(0x80))
+#define T2 ((struct timer*)(0x90))
+#define T3 ((struct timer*)(0xA0))
 
 static void setup_timer(struct timer *t) {
 	t->cra = 0;
@@ -23,7 +23,7 @@ static void setup_timer(struct timer *t) {
 }
 
 int main() {
-	setup_timer(t1);
-	setup_timer(t2);
-	setup_timer(t3);
+	setup_timer(T1);
+	setup_timer(T2);
+	setup_timer(T3);
 }
