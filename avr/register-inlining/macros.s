@@ -14,10 +14,16 @@ setup_timers:
 .L__stack_usage = 0
 	sts 128,__zero_reg__
 	sts 129,__zero_reg__
+	sts 132+1,__zero_reg__
+	sts 132,__zero_reg__
 	sts 160,__zero_reg__
 	sts 161,__zero_reg__
+	sts 164+1,__zero_reg__
+	sts 164,__zero_reg__
 	sts 144,__zero_reg__
 	sts 145,__zero_reg__
+	sts 148+1,__zero_reg__
+	sts 148,__zero_reg__
 /* epilogue start */
 	ret
 	.size	setup_timers, .-setup_timers

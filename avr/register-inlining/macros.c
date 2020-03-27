@@ -7,7 +7,10 @@
 #define SETUP_TIMER(args) SETUP_TIMER_INNER(args)
 #define SETUP_TIMER_INNER(ccra, ccrb, cnt, ocr, imsk, ifr) \
 	ccra = 0; \
-	ccrb = 0;
+	ccrb = 0; \
+	cnt = 0
+	
+	//imsk = (1 << 1)
 
 // #define TIMER_RESET_COUNTER(args, pulse_length) TIMER_RESET_COUNTER_INNER(args, pulse_length)
 // #define TIMER_RESET_COUNTER_INNER(ccra, ccrb, cnt, ocr, imsk, ifr, pulse_length) \
