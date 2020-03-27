@@ -9,7 +9,7 @@ struct timer {
 	volatile uint16_t	icr;
 	volatile uint16_t	ocra;
 	volatile uint16_t	ocrb;
-};
+} __attribute__((packed));
 
 #define T1 ((struct timer*)(0x80))
 #define T2 ((struct timer*)(0x90))
