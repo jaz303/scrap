@@ -1,0 +1,1 @@
+export PATH=/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin:$PATH
