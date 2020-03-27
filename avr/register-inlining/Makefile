@@ -6,5 +6,5 @@ COMMON_FLAGS    += -mmcu=$(MCU)
 COMMON_FLAGS    += -Os
 CFLAGS          := $(COMMON_FLAGS) -std=c11
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+%.s: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -S -o $@ $<
